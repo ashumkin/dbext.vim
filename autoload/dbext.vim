@@ -1407,7 +1407,7 @@ function! s:DB_promptForParameters(...)
             endif
         elseif param ==# 'integratedlogin'
             " Integrated login is only supported on Windows platforms
-            if !has("win32")
+            if !(has("win32") || has("win32unix"))
                 continue
             elseif count(s:intlogin_types_mv, s:DB_get("type") ) == 0
                 " If the chosen datatype type does not support
@@ -4091,7 +4091,7 @@ function! s:DB_SQLSRV_execSql(str)
 
     let cmd = dbext_bin . ' ' . dbext#DB_getWType("cmd_options")
 
-    if has("win32") && s:DB_get("integratedlogin") == 1
+    if (has("win32") || has("win32unix")) && s:DB_get("integratedlogin") == 1
         let cmd = cmd .  ' -E'
     endif
 
